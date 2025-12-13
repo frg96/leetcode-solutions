@@ -1,8 +1,11 @@
 class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
-        hashmap = {}
-        for i in range(len(nums)):
-            complement = target - nums[i]
-            if complement in hashmap and hashmap[complement] != i:
-                return [i, hashmap[complement]]
-            hashmap[nums[i]] = i
+    def twoSum(self, nums: list[int], target: int) -> list[int]:
+        hashmap : dict[int, int] = {}
+        for i, num in enumerate(nums):
+            operand = target - num
+            if operand in hashmap:
+                return [hashmap[operand], i]
+            hashmap[num] = i
+
+        return None
+
