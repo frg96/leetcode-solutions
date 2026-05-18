@@ -2,60 +2,41 @@ class Solution {
     public int threeSumClosest(int[] nums, int target) {
         int n = nums.length;
 
-        int globalSumDiff = Integer.MAX_VALUE;
-        int globalSum = 0;
+        Arrays.sort(nums);
 
-        TreeMap<Integer, Integer> map = new TreeMap<>();
+        int minAbsDiff = Integer.MAX_VALUE;
+        int minSum = 0;
 
-        for(int i = 0; i <= n-1; i++) {
-            map.put(nums[i], i);
-        }
+        for(int i = 0; i < n; i++) {
 
-        // System.out.println(map);
+            int left = i+1;
+            int right = n-1;
 
-        for(int i = 0; i <= n-2; i++) {
-            for(int j = i+1; j <= n-1; j++) {
-                int desiredComplement = target - nums[i] - nums[j];
-                // System.out.println(i + ": " + nums[i] + ", " + j + ": " + nums[j] + ", " + desiredComplement);
+            while(left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
+                // System.out.println("\t%d,%d,%d -> %d + %d + %d = %d".formatted(i, left, right, nums[i], nums[left], nums[right], sum));
 
-                var floorEntry = map.floorEntry(desiredComplement);
-                var ceilEntry = map.ceilingEntry(desiredComplement);
-
-                if(floorEntry != null) {
-                    // System.out.println("\t"+floorEntry);
-                    int key = floorEntry.getKey();
-                    int value = floorEntry.getValue();
-
-                    if(value != i && value != j){
-                        int sum = key + nums[i] + nums[j];
-                        int sumDiff = Math.abs(target - sum);
-                        // System.out.println("\t\t"+sum + " "+ sumDiff);
-                        if(sumDiff < globalSumDiff) {
-                            globalSumDiff = sumDiff;
-                            globalSum = sum;
-                        }
-                    }
+                int absDiff = Math.abs(target - sum);
+                if(absDiff < minAbsDiff){
+                    minAbsDiff = absDiff;
+                    minSum = sum;
                 }
 
-                if(ceilEntry != null) {
-                    // System.out.println("\t"+ceilEntry);
-                    int key = ceilEntry.getKey();
-                    int value = ceilEntry.getValue();
 
-                    if(value != i && value != j){
-                        int sum = key + nums[i] + nums[j];
-                        int sumDiff = Math.abs(target - sum);
-                        // System.out.println("\t\t"+sum + " "+ sumDiff);
-                        if(sumDiff < globalSumDiff) {
-                            globalSumDiff = sumDiff;
-                            globalSum = sum;
-                        }
-                    }
+                if(sum == target) {
+                    return sum;
                 }
-
+                else if(sum < target) {
+                    left++;
+                }
+                else{
+                    right--;
+                }
             }
+
+
         }
 
-        return globalSum;
+        return minSum;
     }
 }
